@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Chatapp!!</title>
+</head>
+<body>
+	<table border="1" style="width:100%">
+	<tr><td>
+	<!--  <input type ="text" id='display' style="width: 500px"/>-->
+	<div id = display style="width:50%"></div> 
+	</td></tr></table>
+	<br>
+	<input type ="text" id='textmsg'/ style="width: 300px;height: 60px;">
+	<button type="button"  onClick="sendMsg()">Send </button>
+	
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script>
+
+//	Global variable chatId is defined which will be unique for a conversion
+
+var chatId;
+	$(function() {
+		chatId = window.location.href.split("=")[1];
+		setInterval(getMessages, 1000);
+	});
+	
+//	Function sendMsg will send variable chatId and message which will insert it into database
+
+	function sendMsg() {
+		var textmsg = $("#textmsg").val();
+		$.ajax({
+			url: '/chatserver/api/user/add/addindb',
+			type:  'POST',
+			data: "chatid="+chatId+"&textmsg="+textmsg,
+		
+		});
+	}
+
+//	Function getMessage will get message from database and display it on chat window.
+//
+//	This message will rerun after every 1 sec to get continues feed to data from dB.
+
+	function getMessages() {
+		$.ajax({
+			url: '/chatserver/api/user/add/getMessage',
+			type:  'POST',
+			data : "chatid="+chatId,
+			success :  function (msg){
+				var eachmsg = msg.split(",");
+				var a = "";
+				for (var i = 0; i < eachmsg.length; i++ )
+					{
+						a = a + "<br>" + eachmsg[i];
+					}
+				$('#display').html(a);
+				}
+		});
+	}
+
+</script>	
+</body>
+</html>

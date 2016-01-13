@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Chatapp!!</title>
+</head>
+<body>
+Welcome!! 
+<br>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>  
+	
+	<br>
+	<table style="width:40%">
+	<tr>
+		<td><b>Enter Your Name : </td><td><input type ="text" id='user1'/></td>
+	</tr>
+	<tr>
+		<td><b>Enter Partner's name : </td><td><input type ="text" id='user2'/></td>
+	</tr>
+	</table>
+	<br>
+<!-- On clicking button code will go to sendReq function -->
+ <button type="button"  onClick="sendReq()"> Start chat </button>
+
+ <!-- sendReq user function will pass 2 user name to REST API
+ 	  using POST method.
+ 	  It will redirect it to index2.html page.	
+   -->
+ 
+<script>
+	function sendReq() {
+		var user1 = $("#user1").val();
+		var user2 = $("#user2").val();
+		$.ajax({
+			type:  'POST',
+			data: "user1="+user1+"&user2="+user2,
+			success  :  function (data){
+				window.location.href = "index2.html?chatId="+user1+","+user2;
+			}
+		});
+	}
+	
+</script>	
+</body>
+</html>
